@@ -1031,6 +1031,22 @@ namespace CareerCloud.UnitTests.Assignment3
             }
         }
 
+        [TestMethod]
+        public void CompanyProfile_Phone_Valid_Format_Add_Test()
+        {
+            Mock<IDataRepository<CompanyProfilePoco>> moqRepo = new Mock<IDataRepository<CompanyProfilePoco>>();
+            CompanyProfileLogic logic = new CompanyProfileLogic(moqRepo.Object);
+            try
+            {
+                logic.Add(new CompanyProfilePoco[] { new CompanyProfilePoco() { ContactPhone = "400-614-4321" } });
+            }
+            catch (AggregateException e)
+            {
+                IEnumerable<ValidationException> exceptions = e.InnerExceptions.Cast<ValidationException>();
+                Assert.IsFalse(exceptions.Any(ex => ex.Code == 601));
+            }
+        }
+
         #endregion CompanyProfile_Tests
 
         #region SecurityLogins_Tests
